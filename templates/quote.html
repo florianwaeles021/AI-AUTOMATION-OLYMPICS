@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block body %}<h1>Premium calculator</h1><div class="card"><p class="mut">Enter a premium formula, e.g. base premium × risk factor.</p>
+<form action="/api/quote" method="get"><label>Formula</label><input name="formula" id="formula" value="1200 * 1.15"><button id="calc">Calculate</button></form></div>{% endblock %}

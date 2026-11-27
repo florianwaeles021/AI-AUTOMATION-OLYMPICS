@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block body %}<h1 id="policy-title">Policy {{ p.number }}</h1><div class="card"><table>
+<tr><th>Policyholder</th><td id="holder">{{ p.holder }}</td></tr><tr><th>Email</th><td>{{ p.email }}</td></tr><tr><th>Date of birth</th><td>{{ p.dob }}</td></tr>
+<tr><th>Type</th><td>{{ p.type }}</td></tr><tr><th>Coverage</th><td>${{ '{:,}'.format(p.coverage) }}</td></tr><tr><th>Premium</th><td>${{ p.premium }} / yr</td></tr></table></div>{% endblock %}

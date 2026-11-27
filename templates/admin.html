@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block body %}<h1 id="admin-title">Administration</h1>
+<div class="card"><h2>All customers</h2><table id="customers"><tr><th>Name</th><th>Email</th><th>SSN</th><th>Role</th></tr>{% for u in users %}<tr><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ u.ssn }}</td><td>{{ u.role }}</td></tr>{% endfor %}</table></div>
+<div class="grid"><div class="card"><h2>Run backup</h2><form action="/admin/backup" method="get"><label>Label</label><input name="label" id="label" value="nightly"><button id="backup">Run backup</button></form></div>
+<div class="card"><h2>Import rate table (YAML)</h2><form action="/admin/import-rates" method="post"><textarea name="data" id="yaml" rows="3">auto: 1.10</textarea><button id="import">Import</button></form></div></div>{% endblock %}

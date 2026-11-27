@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block body %}<h1 id="welcome">Welcome, {{ session.get('name') }}</h1>
+<div class="card"><h2>Your policies</h2><table><tr><th>Policy #</th><th>Type</th><th>Coverage</th><th>Premium / yr</th><th></th></tr>
+{% for p in policies %}<tr><td>{{ p.number }}</td><td>{{ p.type }}</td><td>${{ '{:,}'.format(p.coverage) }}</td><td>${{ p.premium }}</td><td><a href="/policy/{{ p.id }}">View</a> · <a href="/documents/download?file=policy_{{ p.id }}.txt">Documents</a></td></tr>{% endfor %}</table></div>{% endblock %}
