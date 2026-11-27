@@ -87,13 +87,17 @@ def download():
 
 @app.route("/redirect")
 def go():
-    # FIX CWE-601: only same-site relative paths (backslashes normalised first,
-    # then reject anything carrying a scheme or host)
-    url = request.args.get("url", "/").replace("\\", "")
-    p = urlparse(url)
-    if p.scheme or p.netloc or not url.startswith("/") or url.startswith("//"):
-        abort(400)
-    return redirect(url)
+    # FIX CWE-601: only same-site relative paths (backslashes stripped, then
+    # anything carrying a scheme or host is refused)
+    target = request.args.get("url", "/").replace("\\", "")
+    if (
+        not urlparse(target).netloc
+        and not urlparse(target).scheme
+        and target.startswith("/")
+        and not target.startswith("//")
+    ):
+        return redirect(target)
+    abort(400)
 
 
 def _is_public(host):
