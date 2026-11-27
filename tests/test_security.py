@@ -42,9 +42,14 @@ class SecurityTests(unittest.TestCase):
         self.assertEqual(self.c.get("/download", query_string={"file": "ok.txt"}).data, b"fine")
 
     def test_open_redirect(self):
-        for bad in ("https://evil.com", "//evil.com", "/\\evil.com", "javascript:alert(1)"):
+        for bad in ("https://evil.com", "//evil.com", "javascript:alert(1)"):
             self.assertEqual(self.c.get("/redirect", query_string={"url": bad}).status_code, 400, bad)
         self.assertEqual(self.c.get("/redirect", query_string={"url": "/home"}).status_code, 302)
+        # backslash tricks must never produce a Location that browsers read as another host
+        for tricky in ("/\\evil.com", "/\\/evil.com"):
+            r = self.c.get("/redirect", query_string={"url": tricky})
+            loc = r.headers.get("Location", "")
+            self.assertTrue(r.status_code == 400 or (loc.startswith("/") and not loc.startswith("//") and "\\" not in loc), tricky)
 
     def test_ssrf(self):
         for u in ("http://169.254.169.254/", "https://127.0.0.1/", "https://example.com/"):
